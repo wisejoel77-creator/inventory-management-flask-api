@@ -1,3 +1,4 @@
+
 def test_get_inventory(client):
     response = client.get("/inventory")
 

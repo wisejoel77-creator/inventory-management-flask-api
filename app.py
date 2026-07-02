@@ -45,6 +45,7 @@ def update_inventory_item(item_id):
 
     return jsonify({"message": "Item updated in inventory!"})
 
+#route to add a new inventory item
 @app.route('/additem', methods=['POST'])
 def add_inventory_item():
     data = request.get_json()
