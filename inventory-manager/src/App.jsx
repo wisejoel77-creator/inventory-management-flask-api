@@ -34,13 +34,21 @@ function App() {
   });
 }
 
-  useEffect(() => {
-    fetch("http://127.0.0.1:5555/inventory")
-      .then((response) => response.json())
-      .then((data) => {setInventory(data);
-      })
-      .catch((error) => {console.log(error); });
-  }, []);
+function fetchInventory() {
+  fetch("http://127.0.0.1:5555/inventory")
+    .then((res) => res.json())
+    .then((data) => setInventory(data));
+}
+
+function fetchInventory() {
+  fetch("http://127.0.0.1:5555/inventory")
+    .then((res) => res.json())
+    .then((data) => setInventory(data));
+}
+
+useEffect(() => {
+  fetchInventory();
+}, []);
 
   return (
     <div className="container">
@@ -49,25 +57,19 @@ function App() {
       <h2>Add Item</h2>
       <form onSubmit={addItem}>
   <input name="name" placeholder="Name" value={newItem.name} onChange={handleChange}/>
-
   <input name="barcode" placeholder="Barcode" value={newItem.barcode} onChange={handleChange}/>
-
   <input name="quantity" placeholder="Quantity" value={newItem.quantity} onChange={handleChange}/>
-
   <input name="price"  placeholder="Price"  value={newItem.price}  onChange={handleChange} />
-
   <button type="submit">Add Item</button>
 </form>
 
       {inventory.map((item) => (
         <div className="card" key={item.id}>
           <h3>{item.name}</h3>
-
           <p>Barcode: {item.barcode}</p>
-
           <p>Quantity: {item.quantity}</p>
-
           <p>Price: ${item.price}</p>
+          <button onClick={() => deleteItem(item.id)}>Delete</button>
         </div>
       ))}
 
