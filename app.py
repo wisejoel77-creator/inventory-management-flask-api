@@ -1,10 +1,11 @@
 #app.py file for the inventory management system
-from urllib import response
+from flask_cors import CORS
 
 from flask import Flask,request,jsonify
 import requests
 from inventory import inventory
 app = Flask(__name__)
+cors = CORS(app)  # Enable CORS for all routes
 
 #route to get all inventory items
 @app.route('/inventory', methods=['GET'])
@@ -89,7 +90,6 @@ def get_product_details(barcode):
     except requests.exceptions.RequestException as e:
         print("REQUEST FAILED:", e)
         return jsonify({"error": "Failed to fetch product details"}), 500
-
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
