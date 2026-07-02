@@ -58,4 +58,4 @@ def test_update_item(client):
 def test_remove_item(client):
     response = client.delete("/removeitem/1")
 
-    assert response.status_code == 204
+    assert response.status_code == 200

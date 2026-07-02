@@ -34,19 +34,21 @@ function App() {
   });
 }
 
+useEffect(() => {
+  fetchInventory();
+}, []);
+
 function fetchInventory() {
   fetch("http://127.0.0.1:5555/inventory")
     .then((res) => res.json())
-    .then((data) => setInventory(data));
+    .then((data) => setInventory(data))
+    .catch((error) => console.error("Error fetching inventory:", error));
 }
 function deleteItem(id) {
   fetch(`http://127.0.0.1:5555/removeitem/${id}`, {
     method: "DELETE",
   }).then(() => fetchInventory());
-
-useEffect(() => {
-  fetchInventory();
-}, []);
+}
 
   return (
     <div className="container">
@@ -74,5 +76,6 @@ useEffect(() => {
     </div>
   );
 }
+
 
 export default App;

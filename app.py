@@ -31,7 +31,7 @@ def remove_inventory_item(item_id):
         return jsonify({"error": "Item not found"}), 404
 
     inventory = [i for i in inventory if i["id"] != item_id]
-    return jsonify({"message": "Item removed from inventory!"}), 204
+    return jsonify({"message": "Item removed from inventory!"}), 200
 
 #route to update an existing inventory item
 @app.route('/edititem/<int:item_id>', methods=['PATCH'])  
