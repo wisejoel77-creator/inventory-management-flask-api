@@ -1,34 +1,43 @@
+/*app.jsx file for the inventory management system */
 import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
+  const [newItem, setNewItem] = useState({name: "",barcode: "",quantity: "",price: "",});
   const [inventory, setInventory] = useState([]);
 
-  const [name, setName] = useState("");
-  const [barcode, setBarcode] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [price, setPrice] = useState("");
-  
-  const [searchBarcode, setSearchBarcode] = useState("");
-  const [product, setProduct] = useState(null);
+  function addItem() {
+
+  }
+
+  function deleteItem() {
+
+  }
+
+  function searchItem() {
+
+  }
+
+  function handleChange(e) {
+  setNewItem({
+    ...newItem,
+    [e.target.name]: e.target.value,
+  });
+}
 
   useEffect(() => {
     fetch("http://127.0.0.1:5555/inventory")
       .then((response) => response.json())
-      .then((data) => {
-        setInventory(data);
+      .then((data) => {setInventory(data);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {console.log(error); });
   }, []);
 
   return (
     <div className="container">
 
       <h1>Inventory Management System</h1>
-
-      <h2>Current Inventory</h2>
+      <h2>Add Item</h2>
 
       {inventory.map((item) => (
         <div className="card" key={item.id}>
