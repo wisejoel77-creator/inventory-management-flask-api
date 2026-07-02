@@ -18,21 +18,31 @@ def get_specific_item(item_id):
     else:
         return jsonify({"message": "Item not found"}), 404
 
-@app.route('/removeitem', methods=['DELETE'])
-def remove_inventory_item():
-    data = request.get_json()
+#route to remove an inventory item by its ID
+@app.route('/removeitem/<int:item_id>', methods=['DELETE'])
+def remove_inventory_item(item_id):
     global inventory
 
-    item = next((item for item in inventory if item["id"] == data.get("id")), None)
+    item = next((item for item in inventory if item["id"] == item_id), None)
     if not item:
         return jsonify({"error": "Item not found"}), 404
 
-    inventory = [i for i in inventory if i["id"] != data.get("id")]
+    inventory = [i for i in inventory if i["id"] != item_id]
     return 'Item removed from inventory!', 204
     
+#route to update an existing inventory item
+@app.route('/edititem/<int:item_id>', methods=['PATCH'])  
+def update_inventory_item(item_id):
+    item = next((item for item in inventory if item["id"] == item_id), None)
+    if not item:
+        return jsonify({"error": "Item not found"}), 404
+    
+    data = request.get_json()
+    # Update the item with new data
+    for key in data:
+        if key in item:  
+            item[key] = data[key]
 
-@app.route('/edititem', methods=['PATCH'])  
-def update_inventory_item():
     return jsonify({"message": "Item updated in inventory!"})
 
 @app.route('/additem', methods=['POST'])
