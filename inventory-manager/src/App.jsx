@@ -27,10 +27,6 @@ function App() {
         setNewItem({ name: "", barcode: "", quantity: "", price: "" });
   }
 
-  function searchItem() {
-
-  }
-
   function handleChange(e) {
   setNewItem({
     ...newItem,
@@ -51,6 +47,17 @@ function App() {
 
       <h1>Inventory Management System</h1>
       <h2>Add Item</h2>
+      <form onSubmit={addItem}>
+  <input name="name" placeholder="Name" value={newItem.name} onChange={handleChange}/>
+
+  <input name="barcode" placeholder="Barcode" value={newItem.barcode} onChange={handleChange}/>
+
+  <input name="quantity" placeholder="Quantity" value={newItem.quantity} onChange={handleChange}/>
+
+  <input name="price"  placeholder="Price"  value={newItem.price}  onChange={handleChange} />
+
+  <button type="submit">Add Item</button>
+</form>
 
       {inventory.map((item) => (
         <div className="card" key={item.id}>
