@@ -20,7 +20,16 @@ def get_specific_item(item_id):
 
 @app.route('/removeitem', methods=['DELETE'])
 def remove_inventory_item():
-    return jsonify({"message": "Item removed from inventory!"}), 204
+    data = request.get_json()
+    global inventory
+
+    item = next((item for item in inventory if item["id"] == data.get("id")), None)
+    if not item:
+        return jsonify({"error": "Item not found"}), 404
+
+    inventory = [i for i in inventory if i["id"] != data.get("id")]
+    return '', 204
+    
 
 @app.route('/edititem', methods=['PATCH'])  
 def update_inventory_item():
