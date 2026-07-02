@@ -1,4 +1,6 @@
 #app.py file for the inventory management system
+from urllib import response
+
 from flask import Flask,request,jsonify
 import requests
 from inventory import inventory
@@ -58,39 +60,36 @@ def add_inventory_item():
 @app.route('/product/<barcode>', methods=['GET'])
 def get_product_details(barcode):
     url = f"https://world.openfoodfacts.org/api/v0/product/{barcode}.json"
-    response = requests.get(url)
-    
-    if response.status_code != 200:
-        return jsonify({"error": "Failed to fetch product details"}), 404
-    data = response.json()
 
-    if data.get("status") == 1:
-        product = data["product"]
+    try:
+        headers = {"User-Agent": "Mozilla/5.0"}
+        response = requests.get(url, headers=headers, timeout=10)
+
+        # Debug step (VERY useful while learning)
+        print("STATUS CODE:", response.status_code)
+
+        if response.status_code != 200:
+            return jsonify({"error": "External API error"}), 502
+        data = response.json()
+
+        if data.get("status") != 1:
+            return jsonify({"error": "Product not found"}), 404
+        product = data.get("product", {})
 
         return jsonify({
-            "product_name": product.get("product_name"),
+            "barcode": barcode,
+            "name": product.get("product_name"),
             "brand": product.get("brands"),
             "ingredients": product.get("ingredients_text")
         }), 200
-    return jsonify({"error": "Product not found"}), 404
 
-#route to update inventory item storage with product details fetched from an external API using barcode
-@app.route('/inventory/from-barcode/<barcode>', methods=['POST'])
-def add_from_barcode(barcode):
-    url = f"https://world.openfoodfacts.org/api/v0/product/{barcode}.json"
-    response = requests.get(url)
-    
-    if response.status_code != 200:
-        return jsonify({"error": "Failed to fetch product details"}), 404
-    data = response.json()
+    except requests.exceptions.Timeout:
+        return jsonify({"error": "Request timed out"}), 504
 
-    if data.get("status") == 1:
-        product = data["product"]
-        new_item = { "id": len(inventory) + 1, "name": product.get("product_name"), "barcode": barcode, "quantity": 0, "price": 0.0   # Default price
-        }
-        inventory.append(new_item)
-        return jsonify({"message": "Item added to inventory from barcode!"}), 201
-    return jsonify({"error": "Product not found"}), 404
+    except requests.exceptions.RequestException as e:
+        print("REQUEST FAILED:", e)
+        return jsonify({"error": "Failed to fetch product details"}), 500
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
