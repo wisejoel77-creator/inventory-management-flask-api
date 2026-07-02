@@ -1,14 +1,15 @@
+#app.py file for the inventory management system
 from flask import Flask,request,jsonify
 import requests
-from inventory import Inventory
+from inventory import inventory
 app = Flask(__name__)
 
-inventory = []
-
+#route to get all inventory items
 @app.route('/viewitem', methods=['GET'])
 def view_inventory_item():
-    return jsonify(inventory)
+    return jsonify(inventory),200
 
+#route to get a specific inventory item by its ID
 @app.route("/inventory/<int:item_id>")
 def get_item(item_id):
     if 0 <= item_id < len(inventory):
