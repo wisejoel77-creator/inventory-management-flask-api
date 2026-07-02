@@ -29,3 +29,16 @@ def test_item_not_found(client):
 
     assert response.status_code == 404
     assert response.json["message"] == "Item not found"
+
+#test to add a new item
+def test_add_item(client):
+    new_item = {
+        "name": "Eggs",
+        "barcode": "9876543210987",
+        "quantity": 30,
+        "price": 4.00
+    }
+    response = client.post("/additem", json=new_item)
+
+    assert response.status_code == 201
+    assert response.json["message"] == "Item added to inventory!"
