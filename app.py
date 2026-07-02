@@ -28,7 +28,7 @@ def remove_inventory_item():
         return jsonify({"error": "Item not found"}), 404
 
     inventory = [i for i in inventory if i["id"] != data.get("id")]
-    return '', 204
+    return 'Item removed from inventory!', 204
     
 
 @app.route('/edititem', methods=['PATCH'])  
