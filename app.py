@@ -59,14 +59,38 @@ def add_inventory_item():
 def get_product_details(barcode):
     url = f"https://world.openfoodfacts.org/api/v0/product/{barcode}.json"
     response = requests.get(url)
-    if response.status_code == 200:
-        product_data = response.json()
-        if product_data.get("status") == 1:
-            return jsonify(response.json()), 200
-        else:
-            return jsonify({"message": "Product not found"}), 404
-    else:
-        return jsonify({"message": "Error fetching product details"}), response.status_code
+    
+    if response.status_code != 200:
+        return jsonify({"error": "Failed to fetch product details"}), 404
+    data = response.json()
+
+    if data.get("status") == 1:
+        product = data["product"]
+
+        return jsonify({
+            "product_name": product.get("product_name"),
+            "brand": product.get("brands"),
+            "ingredients": product.get("ingredients_text")
+        }), 200
+    return jsonify({"error": "Product not found"}), 404
+
+#route to update inventory item storage with product details fetched from an external API using barcode
+@app.route('/inventory/from-barcode/<barcode>', methods=['POST'])
+def add_from_barcode(barcode):
+    url = f"https://world.openfoodfacts.org/api/v0/product/{barcode}.json"
+    response = requests.get(url)
+    
+    if response.status_code != 200:
+        return jsonify({"error": "Failed to fetch product details"}), 404
+    data = response.json()
+
+    if data.get("status") == 1:
+        product = data["product"]
+        new_item = { "id": len(inventory) + 1, "name": product.get("product_name"), "barcode": barcode, "quantity": 0, "price": 0.0   # Default price
+        }
+        inventory.append(new_item)
+        return jsonify({"message": "Item added to inventory from barcode!"}), 201
+    return jsonify({"error": "Product not found"}), 404
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
