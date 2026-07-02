@@ -53,5 +53,19 @@ def add_inventory_item():
     inventory.append(new_item)
     return jsonify({"message": "Item added to inventory!"}), 201
 
+#external API route to get product details by barcode
+@app.route('/product/<barcode>', methods=['GET'])
+def get_product_details(barcode):
+    url = f"https://world.openfoodfacts.org/api/v0/product/{barcode}.json"
+    response = requests.get(url)
+    if response.status_code == 200:
+        product_data = response.json()
+        if product_data.get("status") == 1:
+            return jsonify(response.json()), 200
+        else:
+            return jsonify({"message": "Product not found"}), 404
+    else:
+        return jsonify({"message": "Error fetching product details"}), response.status_code
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
