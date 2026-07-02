@@ -5,6 +5,7 @@ import "./App.css";
 function App() {
   const [newItem, setNewItem] = useState({name: "",barcode: "",quantity: "",price: "",});
   const [inventory, setInventory] = useState([]);
+  const [search, setSearch] = useState("");
 
   function addItem(e) {
     e.preventDefault();
@@ -56,6 +57,7 @@ function deleteItem(id) {
       <h1>Inventory Management System</h1>
       <h2>Add Item</h2>
       <form onSubmit={addItem}>
+  <input type="text"placeholder="Search by barcode..."value={search}onChange={(e) => setSearch(e.target.value)}/>
   <input name="name" placeholder="Name" value={newItem.name} onChange={handleChange}/>
   <input name="barcode" placeholder="Barcode" value={newItem.barcode} onChange={handleChange}/>
   <input name="quantity" placeholder="Quantity" value={newItem.quantity} onChange={handleChange}/>
@@ -63,7 +65,7 @@ function deleteItem(id) {
   <button type="submit">Add Item</button>
 </form>
 
-      {inventory.map((item) => (
+      {inventory.filter((item) => (item.barcode.toString().includes(search))).map((item) => (
         <div className="card" key={item.id}>
           <h3>{item.name}</h3>
           <p>Barcode: {item.barcode}</p>
