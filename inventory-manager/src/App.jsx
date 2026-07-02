@@ -6,12 +6,25 @@ function App() {
   const [newItem, setNewItem] = useState({name: "",barcode: "",quantity: "",price: "",});
   const [inventory, setInventory] = useState([]);
 
-  function addItem() {
+  function addItem(e) {
+    e.preventDefault();
+    fetch("http://127.0.0.1:5555/additem", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newItem),
+    })
+      .then((response) => response.json())
+      .then(() => {
+        return fetch("http://127.0.0.1:5555/inventory");
+  })
+      .then((response) => response.json())
+      .then((data) => {
+        setInventory(data);
+      });
 
-  }
-
-  function deleteItem() {
-
+        setNewItem({ name: "", barcode: "", quantity: "", price: "" });
   }
 
   function searchItem() {
