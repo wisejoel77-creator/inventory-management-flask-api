@@ -2,8 +2,15 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
-
   const [inventory, setInventory] = useState([]);
+
+  const [name, setName] = useState("");
+  const [barcode, setBarcode] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [price, setPrice] = useState("");
+  
+  const [searchBarcode, setSearchBarcode] = useState("");
+  const [product, setProduct] = useState(null);
 
   useEffect(() => {
     fetch("http://127.0.0.1:5555/inventory")
