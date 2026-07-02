@@ -22,3 +22,10 @@ def test_get_single_item(client):
 
     assert response.status_code == 200
     assert response.json["id"] == 1  # Check if the returned item has the correct ID
+
+#test to check behaviour when an item does not exist
+def test_item_not_found(client):
+    response = client.get("/inventory/91")  # Assuming 91 is not a valid ID
+
+    assert response.status_code == 404
+    assert response.json["message"] == "Item not found"
