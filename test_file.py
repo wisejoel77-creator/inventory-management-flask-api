@@ -42,3 +42,20 @@ def test_add_item(client):
 
     assert response.status_code == 201
     assert response.json["message"] == "Item added to inventory!"
+
+#test to update an existing item
+def test_update_item(client):
+    updated_data = {
+        "name": "Almond Milk",
+        "quantity": 25
+    }
+    response = client.patch("/edititem/1", json=updated_data)
+
+    assert response.status_code == 201
+    assert response.json["message"] == "Item updated in inventory!"
+
+#test to remove an item from the inventory
+def test_remove_item(client):
+    response = client.delete("/removeitem/1")
+
+    assert response.status_code == 204

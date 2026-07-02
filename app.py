@@ -5,7 +5,7 @@ from inventory import inventory
 app = Flask(__name__)
 
 #route to get all inventory items
-@app.route('/viewitem', methods=['GET'])
+@app.route('/inventory', methods=['GET'])
 def view_all_inventory_items():
     return jsonify(inventory),200
 
@@ -28,8 +28,8 @@ def remove_inventory_item(item_id):
         return jsonify({"error": "Item not found"}), 404
 
     inventory = [i for i in inventory if i["id"] != item_id]
-    return 'Item removed from inventory!', 204
-    
+    return jsonify({"message": "Item removed from inventory!"}), 204
+
 #route to update an existing inventory item
 @app.route('/edititem/<int:item_id>', methods=['PATCH'])  
 def update_inventory_item(item_id):
@@ -43,7 +43,7 @@ def update_inventory_item(item_id):
         if key in item:  
             item[key] = data[key]
 
-    return jsonify({"message": "Item updated in inventory!"})
+    return jsonify({"message": "Item updated in inventory!"}),201
 
 #route to add a new inventory item
 @app.route('/additem', methods=['POST'])
