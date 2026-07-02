@@ -39,12 +39,10 @@ function fetchInventory() {
     .then((res) => res.json())
     .then((data) => setInventory(data));
 }
-
-function fetchInventory() {
-  fetch("http://127.0.0.1:5555/inventory")
-    .then((res) => res.json())
-    .then((data) => setInventory(data));
-}
+function deleteItem(id) {
+  fetch(`http://127.0.0.1:5555/removeitem/${id}`, {
+    method: "DELETE",
+  }).then(() => fetchInventory());
 
 useEffect(() => {
   fetchInventory();
