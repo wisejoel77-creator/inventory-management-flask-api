@@ -6,16 +6,17 @@ app = Flask(__name__)
 
 #route to get all inventory items
 @app.route('/viewitem', methods=['GET'])
-def view_inventory_item():
+def view_all_inventory_items():
     return jsonify(inventory),200
 
 #route to get a specific inventory item by its ID
 @app.route("/inventory/<int:item_id>")
-def get_item(item_id):
-    if 0 <= item_id < len(inventory):
-        return jsonify(inventory[item_id])
+def get_specific_item(item_id):
+    item = next((item for item in inventory if item["id"] == item_id), None)
+    if item:
+        return jsonify(item), 200
     else:
-        return jsonify({"error": "Item not found"}), 404
+        return jsonify({"message": "Item not found"}), 404
 
 @app.route('/removeitem', methods=['DELETE'])
 def remove_inventory_item():
