@@ -15,3 +15,10 @@ def test_get_inventory(client):
 
     assert response.status_code == 200
     assert isinstance(response.json, list)  # Check if the response is a list
+
+#test to get a single item from the inventory
+def test_get_single_item(client):
+    response = client.get("/inventory/1")
+
+    assert response.status_code == 200
+    assert response.json["id"] == 1  # Check if the returned item has the correct ID
