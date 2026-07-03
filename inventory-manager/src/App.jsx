@@ -53,43 +53,80 @@ function deleteItem(id) {
   }).then(() => fetchInventory());
 }
 
-  return (
-    <div className="container">
+function updateItem(id) {
+  fetch(`http://127.0.0.1:5555/edititem/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(editItem),
+  })
+    .then((res) => res.json())
+    .then(() => {fetchInventory();
+      setEditingItemId(null);
+    })
+    .catch((err) => console.error("Update failed:", err));
+}
 
-      <h1>Inventory Management System</h1>
-      <h2>Add Item</h2>
-      <form onSubmit={addItem}>
-  <input name="name" placeholder="Name" value={newItem.name} onChange={handleChange}/>
-  <input name="barcode" placeholder="Barcode" value={newItem.barcode} onChange={handleChange}/>
-  <input name="quantity" placeholder="Quantity" value={newItem.quantity} onChange={handleChange}/>
-  <input name="price"  placeholder="Price"  value={newItem.price}  onChange={handleChange} />
-  <button type="submit">Add Item</button>
-  <button
-  onClick={() => {
-    setEditingId(item.id);
-    setEditItem({ name: item.name, barcode: item.barcode, quantity: item.quantity, price: item.price,}); }}>
-  Edit
-</button>
-</form>
+ return (
+  <div className="container">
+    <h1>Inventory Management System</h1>
 
-      <h2>search product</h2>
-      <div classname = "Search-box">
-        <input type="text"placeholder="Search by barcode..."value={barcode}onChange={(e) => setBarcode(e.target.value)}/>
-      </div>
+    <h2>Add Item</h2>
+    <form onSubmit={addItem}>
+      <input name="name" value={newItem.name} onChange={handleChange} placeholder="Name" />
+      <input name="barcode" value={newItem.barcode} onChange={handleChange} placeholder="Barcode" />
+      <input name="quantity" value={newItem.quantity} onChange={handleChange} placeholder="Quantity" />
+      <input name="price" value={newItem.price} onChange={handleChange} placeholder="Price" />
+      <button type="submit">Add Item</button>
+    </form>
 
-      {inventory.filter((item) => (item.barcode.toString().includes(barcode))).map((item) => (
+    <h2>Search</h2>
+    <input value={barcode} onChange={(e) => setBarcode(e.target.value)} placeholder="Search barcode"/>
+
+    {inventory.filter((item) => item.barcode.toString().includes(barcode))
+      .map((item) => (
         <div className="card" key={item.id}>
           <h3>{item.name}</h3>
           <p>Barcode: {item.barcode}</p>
           <p>Quantity: {item.quantity}</p>
           <p>Price: ${item.price}</p>
-          <button onClick={() => deleteItem(item.id)}>Delete</button>
+    <button onClick={() => deleteItem(item.id)}>Delete</button>
+
+          <button
+            onClick={() => {setEditingItemId(item.id);
+              setEditItem({ name: item.name, barcode: item.barcode, quantity: item.quantity, price: item.price,
+              });
+            }}> Edit
+           </button>
+
+          {editingItemId === item.id && (
+            <div className="edit-form">
+              <input name="name" value={editItem.name}
+                onChange={(e) => setEditItem({ ...editItem, name: e.target.value })
+                }/>
+
+              <input name="barcode" value={editItem.barcode}
+                onChange={(e) => setEditItem({ ...editItem, barcode: e.target.value })
+                } />
+
+              <input name="quantity" value={editItem.quantity}
+                onChange={(e) => setEditItem({ ...editItem, quantity: e.target.value })
+                }/>
+
+              <input name="price" value={editItem.price}
+                onChange={(e) =>  setEditItem({ ...editItem, price: e.target.value })
+                } />
+
+              <button onClick={() => updateItem(item.id)}>
+                Save Changes
+              </button>
+            </div>
+          )}
         </div>
       ))}
-
-    </div>
-  );
+  </div>
+); 
 }
-
 
 export default App;
