@@ -6,6 +6,8 @@ function App() {
   const [newItem, setNewItem] = useState({name: "",barcode: "",quantity: "",price: "",});
   const [inventory, setInventory] = useState([]);
   const [barcode, setBarcode] = useState("");
+  const [editingItemId, setEditingItemId] = useState(null);
+  const [editItem, setEditItem] = useState({ name: "", barcode: "", quantity: "", price: "" });
 
   function addItem(e) {
     e.preventDefault();
@@ -62,6 +64,12 @@ function deleteItem(id) {
   <input name="quantity" placeholder="Quantity" value={newItem.quantity} onChange={handleChange}/>
   <input name="price"  placeholder="Price"  value={newItem.price}  onChange={handleChange} />
   <button type="submit">Add Item</button>
+  <button
+  onClick={() => {
+    setEditingId(item.id);
+    setEditItem({ name: item.name, barcode: item.barcode, quantity: item.quantity, price: item.price,}); }}>
+  Edit
+</button>
 </form>
 
       <h2>search product</h2>
