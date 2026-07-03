@@ -1,18 +1,110 @@
-body{
+/* App.css */
+
+body {
   font-family: Arial, Helvetica, sans-serif;
-  background:#f4f4f4;
+  background-color: #f4f6f8;
+  margin: 0;
+  padding: 0;
 }
 
-.container{
-  width:80%;
-  margin:auto;
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
 }
 
-.card{
-  background:white;
-  padding:15px;
-  margin-bottom:15px;
-  border-radius:8px;
-  box-shadow:0 2px 5px rgba(0,0,0,.2);
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
 }
+
+h2 {
+  margin-top: 30px;
+  color: #444;
+}
+
+/* FORM */
+form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+input {
+  flex: 1 1 200px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+}
+
+input:focus {
+  border-color: #4a90e2;
+}
+
+/* BUTTONS */
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #4a90e2;
+  color: white;
+  font-weight: bold;
+  transition: 0.2s ease;
+}
+
+button:hover {
+  background-color: #357bd8;
+}
+
+/* INVENTORY CARDS */
+.card {
+  background: white;
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card h3 {
+  margin: 0;
+  color: #222;
+}
+
+.card p {
+  margin: 3px 0;
+  color: #555;
+}
+
+/* DELETE BUTTON */
+.card button {
+  background-color: #e74c3c;
+}
+
+.card button:hover {
+  background-color: #c0392b;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 

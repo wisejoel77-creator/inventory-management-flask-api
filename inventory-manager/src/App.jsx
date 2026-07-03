@@ -5,7 +5,7 @@ import "./App.css";
 function App() {
   const [newItem, setNewItem] = useState({name: "",barcode: "",quantity: "",price: "",});
   const [inventory, setInventory] = useState([]);
-  const [search, setSearch] = useState("");
+  const [barcode, setBarcode] = useState("");
 
   function addItem(e) {
     e.preventDefault();
@@ -57,7 +57,6 @@ function deleteItem(id) {
       <h1>Inventory Management System</h1>
       <h2>Add Item</h2>
       <form onSubmit={addItem}>
-  <input type="text"placeholder="Search by barcode..."value={search}onChange={(e) => setSearch(e.target.value)}/>
   <input name="name" placeholder="Name" value={newItem.name} onChange={handleChange}/>
   <input name="barcode" placeholder="Barcode" value={newItem.barcode} onChange={handleChange}/>
   <input name="quantity" placeholder="Quantity" value={newItem.quantity} onChange={handleChange}/>
@@ -65,7 +64,12 @@ function deleteItem(id) {
   <button type="submit">Add Item</button>
 </form>
 
-      {inventory.filter((item) => (item.barcode.toString().includes(search))).map((item) => (
+      <h2>search product</h2>
+      <div classname = "Search-box">
+        <input type="text"placeholder="Search by barcode..."value={barcode}onChange={(e) => setBarcode(e.target.value)}/>
+      </div>
+
+      {inventory.filter((item) => (item.barcode.toString().includes(barcode))).map((item) => (
         <div className="card" key={item.id}>
           <h3>{item.name}</h3>
           <p>Barcode: {item.barcode}</p>
