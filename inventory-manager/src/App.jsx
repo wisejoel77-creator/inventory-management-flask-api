@@ -8,6 +8,8 @@ function App() {
   const [barcode, setBarcode] = useState("");
   const [editingItemId, setEditingItemId] = useState(null);
   const [editItem, setEditItem] = useState({ name: "", barcode: "", quantity: "", price: "" });
+  const [apiProduct, setApiProduct] = useState(null);
+  const [searchBarcode, setSearchBarcode] = useState("");
 
   function addItem(e) {
     e.preventDefault();
@@ -35,6 +37,15 @@ function App() {
     ...newItem,
     [e.target.name]: e.target.value,
   });
+}
+
+function fetchProduct() {
+  fetch(`http://127.0.0.1:5555/product/${searchBarcode}`)
+    .then((res) => res.json())
+    .then((data) => {
+      setApiProduct(data);
+    })
+    .catch((err) => console.error("Product fetch failed:", err));
 }
 
 useEffect(() => {
@@ -83,6 +94,22 @@ function updateItem(id) {
 
     <h2>Search</h2>
     <input value={barcode} onChange={(e) => setBarcode(e.target.value)} placeholder="Search barcode"/>
+
+    <h2>External Product Lookup</h2>
+
+<input
+  placeholder="Enter barcode" value={searchBarcode}
+  onChange={(e) => setSearchBarcode(e.target.value)}/>
+
+<button onClick={fetchProduct}>Search Product</button>
+
+{apiProduct && (
+  <div className="card">
+    <h3>{apiProduct.name}</h3>
+    <p><strong>Brand:</strong> {apiProduct.brand}</p>
+    <p><strong>Barcode:</strong> {apiProduct.barcode}</p>
+  </div>
+)}
 
     {inventory.filter((item) => item.barcode.toString().includes(barcode))
       .map((item) => (
