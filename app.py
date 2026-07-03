@@ -53,7 +53,8 @@ def update_inventory_item(item_id):
 def add_inventory_item():
     data = request.get_json()
 
-    new_item = {"id": len(inventory) + 1, "name": data.get("name"), "barcode": data.get("barcode"), "quantity": data.get("quantity"), "price": data.get("price") }
+    new_item = {"id": max([item["id"] for item in inventory] or [0]) + 1 ,
+     "name": data.get("name"), "barcode": data.get("barcode"), "quantity": data.get("quantity"), "price": data.get("price") }
     inventory.append(new_item)
     return jsonify({"message": "Item added to inventory!"}), 201
 
