@@ -28,7 +28,7 @@ function App() {
       .then((data) => {
         setInventory(data);
       });
-
+      
         setNewItem({ name: "", barcode: "", quantity: "", price: "" });
   }
 
@@ -97,10 +97,8 @@ function updateItem(id) {
 
     <h2>External Product Lookup</h2>
 
-<input
-  placeholder="Enter barcode" value={searchBarcode}
+<input placeholder="Enter barcode" value={searchBarcode}
   onChange={(e) => setSearchBarcode(e.target.value)}/>
-
 <button onClick={fetchProduct}>Search Product</button>
 
 {apiProduct && (
