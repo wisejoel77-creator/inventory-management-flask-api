@@ -31,7 +31,7 @@ def remove_inventory_item(item_id):
         return jsonify({"error": "Item not found"}), 404
 
     inventory = [i for i in inventory if i["id"] != item_id]
-    return jsonify({"message": "Item removed from inventory!"}), 204
+    return jsonify({"message": "Item removed from inventory!"}), 200
 
 #route to update an existing inventory item
 @app.route('/edititem/<int:item_id>', methods=['PATCH'])  
@@ -53,7 +53,8 @@ def update_inventory_item(item_id):
 def add_inventory_item():
     data = request.get_json()
 
-    new_item = {"id": len(inventory) + 1, "name": data.get("name"), "barcode": data.get("barcode"), "quantity": data.get("quantity"), "price": data.get("price") }
+    new_item = {"id": max([item["id"] for item in inventory] or [0]) + 1 ,
+     "name": data.get("name"), "barcode": data.get("barcode"), "quantity": data.get("quantity"), "price": data.get("price") }
     inventory.append(new_item)
     return jsonify({"message": "Item added to inventory!"}), 201
 
